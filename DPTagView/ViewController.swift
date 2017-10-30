@@ -25,11 +25,36 @@ class ViewController: UIViewController {
     tagView.dp_y = 200.0
     tagView.offset = 15
 
+    self.view.isUserInteractionEnabled = true
+
+    let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    tap.numberOfTapsRequired = 1
+    tap.numberOfTouchesRequired = 1
+    self.view.addGestureRecognizer(tap)
+
+    let longTap = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(rec:)))
+    longTap.minimumPressDuration = 2
+    self.view.addGestureRecognizer(longTap)
+  }
+
+  func handleLongPress(rec: UILongPressGestureRecognizer) {
+    print("long")
+    rec.isEnabled = false
+    rec.removeTarget(self, action: #selector(handleLongPress(rec:)))
+
+    var tags: [DPTag] = []
+
     let font: UIFont = .systemFont(ofSize: 12)
-    for _ in 0..<20 {
-      tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5))
+    for _ in 0 ..< 20 {
+      tags.append(.init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5))
     }
 
+    self.tagView.setTags(tags: tags)
+  }
+
+  func handleTap() {
+    let font: UIFont = .systemFont(ofSize: 16)
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5))
   }
 
   var randomText: String {

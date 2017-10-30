@@ -24,57 +24,26 @@ class DPTagView: UIView {
   var offset: CGFloat = 5.0
   private var tags: [DPTag] = []
 
+  private var curPosX: CGFloat = 0.0
+  private var curPosY: CGFloat = 0.0
+
   override func layoutSubviews() {
     super.layoutSubviews()
-
-    for btn in self.subviews {
-      btn.removeFromSuperview()
-    }
-
-    var curX: CGFloat = self.offset
-    var curY: CGFloat = self.offset
-    var curLineMaxHeight: CGFloat = 0.0
-
-    for tag in self.tags {
-      let btn = UIButton(type: .custom)
-      self.addSubview(btn)
-      btn.setAttributedTitle(tag.text, for: .normal)
-//      计算按钮的大小
-      let tagSize = tag.sizeOfText
-      btn.size = tagSize
-      print(tag)
-      btn.dp_width += tag.offset * 2
-      btn.dp_x = curX
-      btn.dp_y = curY
-
-      curX += btn.dp_width + self.offset
-
-//      TODO 不等高情况下处理
-//      获取当前行最大高度
-      if btn.dp_height > curLineMaxHeight {
-        curLineMaxHeight = btn.dp_height
-      }
-
-//      如果当前位置无法承载元素，另起一行，以当前行元素最大高度为换行标准
-      if self.dp_width - curX < 0 {
-        curY += curLineMaxHeight + self.offset
-        curX = self.offset
-
-        btn.dp_x = curX
-        btn.dp_y = curY
-
-        curX += btn.dp_width + self.offset
-      }
-
-      btn.backgroundColor = .random()
-    }
-
-    self.dp_height = curY + curLineMaxHeight + self.offset
   }
+
+  public override init(frame: CGRect) {
+    super.init(frame: frame)
+    reset()
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+
 
   func addTag(tag: DPTag) {
     self.tags.append(tag)
-    rebuild()
+    renderElement(newTag: tag)
   }
 
   func setTags(tags: [DPTag]) {
@@ -83,7 +52,77 @@ class DPTagView: UIView {
   }
 
   func rebuild() {
-    self.setNeedsLayout()
+    for btn in self.subviews {
+      btn.removeFromSuperview()
+    }
+
+    reset()
+
+//    根据元素逐个添加
+    for tag in self.tags {
+      renderElement(newTag: tag)
+    }
+
+  }
+
+  private func renderElement(newTag: DPTag) {
+    let tag = newTag
+
+    var curX: CGFloat = self.curPosX
+    var curY: CGFloat = self.curPosY
+    var curLineMaxHeight: CGFloat = 0.0
+
+//    最终坐标
+    var tagBtnX: CGFloat = 0
+    var tagBtnY: CGFloat = 0
+
+    let btn = UIButton(type: .custom)
+    self.addSubview(btn)
+    btn.setAttributedTitle(tag.text, for: .normal)
+//      计算按钮的大小
+    let tagSize = tag.sizeOfText
+    btn.size = tagSize
+    print(tag)
+    btn.dp_width += tag.offset * 2
+
+    tagBtnX = curX
+    tagBtnY = curY
+
+    curX += btn.dp_width + self.offset
+
+//      TODO 不等高情况下处理
+//      获取当前行最大高度
+    if btn.dp_height > curLineMaxHeight {
+      curLineMaxHeight = btn.dp_height
+    }
+
+//      如果当前位置无法承载元素，另起一行，以当前行元素最大高度为换行标准
+    if self.dp_width - curX < 0 {
+      curY += curLineMaxHeight + self.offset
+      curX = self.offset
+
+      tagBtnX = curX
+      tagBtnY = curY
+
+      curX += btn.dp_width + self.offset
+    }
+
+    btn.backgroundColor = .random()
+
+    self.dp_height = curY + curLineMaxHeight + self.offset
+
+    self.curPosX = curX
+    self.curPosY = curY
+
+    UIView.animate(withDuration: 0.25) {
+      btn.dp_x = tagBtnX
+      btn.dp_y = tagBtnY
+    }
+  }
+
+  func reset() {
+    self.curPosX = self.offset
+    self.curPosY = self.offset
   }
 
 }
@@ -96,7 +135,15 @@ struct DPTag: CustomStringConvertible {
 //  左右边距
   var offset: CGFloat = 10.0
 
+//   用户可配置固定的元素大小
+  var fixedSize: CGSize? = nil
+
   var sizeOfText: CGSize {
+
+    if let size = self.fixedSize {
+      return size
+    }
+
     if let t = text {
       return t.boundingRect(with: CGSize(width: 100000, height: 1000), context: nil).size
     }
@@ -104,6 +151,11 @@ struct DPTag: CustomStringConvertible {
   }
 
   var sizeOfIcon: CGSize {
+
+    if let size = self.fixedSize {
+      return size
+    }
+
     if let img = icon {
       return img.size
     }
@@ -113,7 +165,6 @@ struct DPTag: CustomStringConvertible {
   var description: String {
     return "tagName: \(self.text!.string) size: \(self.sizeOfText)"
   }
-
 
 }
 
