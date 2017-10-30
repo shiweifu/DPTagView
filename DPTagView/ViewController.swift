@@ -25,6 +25,13 @@ class ViewController: UIViewController {
     tagView.dp_y = 200.0
     tagView.offset = 15
 
+    var tagSize = CGSize(width: 105, height: 26)
+    let font: UIFont = .systemFont(ofSize: 14)
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize))
+    tagSize = .init(width: 105, height: 100)
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize))
+
     self.view.isUserInteractionEnabled = true
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))

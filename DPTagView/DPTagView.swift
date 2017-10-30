@@ -13,7 +13,7 @@ enum DPTagType {
 }
 
 enum DPTagViewShowType {
-  case normal // 文本举行
+  case normal // 文本类型
   case ellipse // 不规则气泡
 }
 
@@ -30,11 +30,12 @@ class DPTagView: UIView {
 
   private var curPosX: CGFloat = 0.0
   private var curPosY: CGFloat = 0.0
+  var curLineMaxHeight: CGFloat = 0.0
 
 
   func addTag(tag: DPTag) {
     self.tags.append(tag)
-    renderElement(newTag: tag)
+    renderElement(newTag: tag, index: self.tags.count - 1)
   }
 
   func setTags(tags: [DPTag]) {
@@ -50,25 +51,26 @@ class DPTagView: UIView {
     reset()
 
 //    根据元素逐个添加
-    for tag in self.tags {
-      renderElement(newTag: tag)
+    for (index, tag) in self.tags.enumerated() {
+      renderElement(newTag: tag, index: index)
     }
 
   }
 
-  private func renderElement(newTag: DPTag) {
+  private func renderElement(newTag: DPTag, index: Int) {
     let tag = newTag
 
     var curX: CGFloat = self.curPosX
     var curY: CGFloat = self.curPosY
-    var curLineMaxHeight: CGFloat = 0.0
 
 //    最终坐标
     var tagBtnX: CGFloat = 0
     var tagBtnY: CGFloat = 0
 
     let btn = UIButton(type: .custom)
+    btn.tag = index
     self.addSubview(btn)
+    btn.addTarget(self, action: #selector(handleTagTouch(button:)), for: .touchUpInside)
     btn.setAttributedTitle(tag.text, for: .normal)
 //      计算按钮的大小
     let tagSize = tag.sizeOfText
@@ -80,12 +82,12 @@ class DPTagView: UIView {
 //    计算下一个元素的横轴坐标
     curX += btn.dp_width + self.offset
 
-//      TODO 不等高情况下处理
 //      获取当前行最大高度
     if btn.dp_height > curLineMaxHeight {
       curLineMaxHeight = btn.dp_height
     }
 
+    var wrapLineFlag = false
 //      如果当前位置无法承载元素，另起一行，以当前行元素最大高度为换行标准
     if self.dp_width - curX < 0 {
       curY += curLineMaxHeight + self.offset
@@ -95,14 +97,20 @@ class DPTagView: UIView {
       tagBtnY = curY
 
       curX += btn.dp_width + self.offset
+      wrapLineFlag = true
     }
 
     btn.backgroundColor = .random()
 
+//    更改当前视图的高度
     self.dp_height = curY + curLineMaxHeight + self.offset
 
     self.curPosX = curX
     self.curPosY = curY
+
+    if wrapLineFlag {
+      curLineMaxHeight = 0.0
+    }
 
     UIView.animate(withDuration: 0.25) {
       btn.dp_x = tagBtnX
@@ -110,9 +118,16 @@ class DPTagView: UIView {
     }
   }
 
+  func handleTagTouch(button: UIButton) {
+    let tagIdx = button.tag
+    let tag = self.tags[tagIdx]
+    print(tag)
+  }
+
   func reset() {
     self.curPosX = self.offset
     self.curPosY = self.offset
+    self.curLineMaxHeight = 0.0
   }
 
 }
