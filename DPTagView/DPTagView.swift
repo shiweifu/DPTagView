@@ -20,6 +20,8 @@ enum DPTagViewShowType {
 class DPTagView: UIView {
 
   var lineSpace: CGFloat = 10.0  // 行间距
+//  元素边距
+  var offset: CGFloat = 5.0
   private var tags: [DPTag] = []
 
   override func layoutSubviews() {
@@ -29,15 +31,45 @@ class DPTagView: UIView {
       btn.removeFromSuperview()
     }
 
+    var curX: CGFloat = self.offset
+    var curY: CGFloat = self.offset
+    var curLineMaxHeight: CGFloat = 0.0
+
     for tag in self.tags {
       let btn = UIButton(type: .custom)
       self.addSubview(btn)
       btn.setAttributedTitle(tag.text, for: .normal)
-      btn.sizeToFit()
-      btn.dp_x = 0
-      btn.dp_y = 0
+//      计算按钮的大小
+      let tagSize = tag.sizeOfText
+      btn.size = tagSize
+      print(tag)
+      btn.dp_width += tag.offset * 2
+      btn.dp_x = curX
+      btn.dp_y = curY
+
+      curX += btn.dp_width + self.offset
+
+//      TODO 不等高情况下处理
+//      获取当前行最大高度
+      if btn.dp_height > curLineMaxHeight {
+        curLineMaxHeight = btn.dp_height
+      }
+
+//      如果当前位置无法承载元素，另起一行，以当前行元素最大高度为换行标准
+      if self.dp_width - curX < 0 {
+        curY += curLineMaxHeight + self.offset
+        curX = self.offset
+
+        btn.dp_x = curX
+        btn.dp_y = curY
+
+        curX += btn.dp_width + self.offset
+      }
+
+      btn.backgroundColor = .random()
     }
 
+    self.dp_height = curY + curLineMaxHeight + self.offset
   }
 
   func addTag(tag: DPTag) {
@@ -56,14 +88,33 @@ class DPTagView: UIView {
 
 }
 
-struct DPTag {
+struct DPTag: CustomStringConvertible {
   var tagType: DPTagType = .text
   var text: NSAttributedString?
   var icon: UIImage?
 
+//  左右边距
+  var offset: CGFloat = 10.0
 
-//  边距
-  var offset: CGFloat = 5.0
+  var sizeOfText: CGSize {
+    if let t = text {
+      return t.boundingRect(with: CGSize(width: 100000, height: 1000), context: nil).size
+    }
+    return .zero
+  }
+
+  var sizeOfIcon: CGSize {
+    if let img = icon {
+      return img.size
+    }
+    return .zero
+  }
+
+  var description: String {
+    return "tagName: \(self.text!.string) size: \(self.sizeOfText)"
+  }
+
+
 }
 
 extension UIView {
