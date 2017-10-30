@@ -27,10 +27,22 @@ class ViewController: UIViewController {
 
     var tagSize = CGSize(width: 105, height: 26)
     let font: UIFont = .systemFont(ofSize: 14)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize))
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
     tagSize = .init(width: 105, height: 100)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
+
+    let tag = DPTag.init(tagType: .text,
+                            text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
+                            icon: nil,
+                          offset: 15,
+                       fixedSize: tagSize) { tag in
+      let img = UIImageView(image: tag.icon)
+      img.image = UIImage(named: "Bitmap")
+      img.dp_size = .init(width: 50, height: 50)
+      return img
+    }
+//    tagView.addTag(tag: tag)
 
     self.view.isUserInteractionEnabled = true
 
@@ -53,7 +65,7 @@ class ViewController: UIViewController {
 
     let font: UIFont = .systemFont(ofSize: 12)
     for _ in 0 ..< 20 {
-      tags.append(.init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil))
+      tags.append(.init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil, customViewBlock: nil))
     }
 
     self.tagView.setTags(tags: tags)
@@ -61,7 +73,7 @@ class ViewController: UIViewController {
 
   func handleTap() {
     let font: UIFont = .systemFont(ofSize: 16)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil, customViewBlock: nil))
   }
 
   var randomText: String {

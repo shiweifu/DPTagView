@@ -67,24 +67,33 @@ class DPTagView: UIView {
     var tagBtnX: CGFloat = 0
     var tagBtnY: CGFloat = 0
 
-    let btn = UIButton(type: .custom)
-    btn.tag = index
-    self.addSubview(btn)
-    btn.addTarget(self, action: #selector(handleTagTouch(button:)), for: .touchUpInside)
-    btn.setAttributedTitle(tag.text, for: .normal)
+    var tagElementView: UIView!
+
+    if let createBlock = tag.customViewBlock {
+      tagElementView = createBlock(tag)
+    }
+    else {
+      let btn = UIButton(type: .custom)
+      btn.tag = index
+      btn.setAttributedTitle(tag.text, for: .normal)
 //      计算按钮的大小
-    let tagSize = tag.sizeOfText
-    btn.size = tagSize
-    print(tag)
+      let tagSize = tag.sizeOfText
+      btn.dp_size = tagSize
+      print(tag)
+      tagElementView = btn
+    }
+
+    self.addSubview(tagElementView)
+
     tagBtnX = curX
     tagBtnY = curY
 
 //    计算下一个元素的横轴坐标
-    curX += btn.dp_width + self.offset
+    curX += tagElementView.dp_width + self.offset
 
 //      获取当前行最大高度
-    if btn.dp_height > curLineMaxHeight {
-      curLineMaxHeight = btn.dp_height
+    if tagElementView.dp_height > curLineMaxHeight {
+      curLineMaxHeight = tagElementView.dp_height
     }
 
     var wrapLineFlag = false
@@ -96,11 +105,11 @@ class DPTagView: UIView {
       tagBtnX = curX
       tagBtnY = curY
 
-      curX += btn.dp_width + self.offset
+      curX += tagElementView.dp_width + self.offset
       wrapLineFlag = true
     }
 
-    btn.backgroundColor = .random()
+    tagElementView.backgroundColor = .random()
 
 //    更改当前视图的高度
     self.dp_height = curY + curLineMaxHeight + self.offset
@@ -113,8 +122,8 @@ class DPTagView: UIView {
     }
 
     UIView.animate(withDuration: 0.25) {
-      btn.dp_x = tagBtnX
-      btn.dp_y = tagBtnY
+      tagElementView.dp_x = tagBtnX
+      tagElementView.dp_y = tagBtnY
     }
   }
 
@@ -136,12 +145,12 @@ struct DPTag: CustomStringConvertible {
   var tagType: DPTagType = .text
   var text: NSAttributedString?
   var icon: UIImage?
-
 //  左右边距
   var offset: CGFloat = 10.0
-
 //   用户可配置固定的元素大小
   var fixedSize: CGSize? = nil
+
+  var customViewBlock: ((DPTag) -> UIView)!
 
   var sizeOfText: CGSize {
 
@@ -232,7 +241,7 @@ extension UIView {
     }
   }
 
-  public var size: CGSize {
+  public var dp_size: CGSize {
     get {
       return self.frame.size
     } set(value) {
