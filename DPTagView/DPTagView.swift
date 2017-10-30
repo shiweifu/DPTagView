@@ -21,24 +21,15 @@ class DPTagView: UIView {
 
   var lineSpace: CGFloat = 10.0  // 行间距
 //  元素边距
-  var offset: CGFloat = 5.0
+  var offset: CGFloat = 5.0 {
+    didSet {
+      self.reset()
+    }
+  }
   private var tags: [DPTag] = []
 
   private var curPosX: CGFloat = 0.0
   private var curPosY: CGFloat = 0.0
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-  }
-
-  public override init(frame: CGRect) {
-    super.init(frame: frame)
-    reset()
-  }
-
-  public required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-  }
 
 
   func addTag(tag: DPTag) {
@@ -83,11 +74,10 @@ class DPTagView: UIView {
     let tagSize = tag.sizeOfText
     btn.size = tagSize
     print(tag)
-    btn.dp_width += tag.offset * 2
-
     tagBtnX = curX
     tagBtnY = curY
 
+//    计算下一个元素的横轴坐标
     curX += btn.dp_width + self.offset
 
 //      TODO 不等高情况下处理
@@ -145,7 +135,8 @@ struct DPTag: CustomStringConvertible {
     }
 
     if let t = text {
-      return t.boundingRect(with: CGSize(width: 100000, height: 1000), context: nil).size
+      let result = t.boundingRect(with: CGSize(width: 100000, height: 1000), context: nil).size
+      return CGSize(width: result.width + self.offset * 2, height: result.height + self.offset * 2)
     }
     return .zero
   }

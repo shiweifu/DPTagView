@@ -46,7 +46,7 @@ class ViewController: UIViewController {
 
     let font: UIFont = .systemFont(ofSize: 12)
     for _ in 0 ..< 20 {
-      tags.append(.init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5))
+      tags.append(.init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil))
     }
 
     self.tagView.setTags(tags: tags)
@@ -54,7 +54,7 @@ class ViewController: UIViewController {
 
   func handleTap() {
     let font: UIFont = .systemFont(ofSize: 16)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil))
   }
 
   var randomText: String {
