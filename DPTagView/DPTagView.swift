@@ -74,14 +74,13 @@ class DPTagView: UIView {
     }
     else {
       let btn = UIButton(type: .custom)
-      btn.tag = index
       btn.setAttributedTitle(tag.text, for: .normal)
-//      计算按钮的大小
       let tagSize = tag.sizeOfText
       btn.dp_size = tagSize
       tagElementView = btn
     }
 
+    tagElementView.tag = index
     self.addSubview(tagElementView)
 
     tagBtnX = curX
@@ -110,7 +109,11 @@ class DPTagView: UIView {
       curLineMaxHeight = tagElementView.dp_height
     }
 
-    tagElementView.backgroundColor = .random()
+    tagElementView.backgroundColor = tag.backgroundColor
+//    添加事件
+    let tapGesture = UITapGestureRecognizer()
+    tagElementView.addGestureRecognizer(tapGesture)
+    tapGesture.addTarget(self, action: #selector(handleTagTouch(gesture:)))
 
     self.curPosX = curX
     self.curPosY = curY
@@ -139,22 +142,24 @@ class DPTagView: UIView {
     }
 
     self.tags = []
+    self.reset()
   }
 
   func removeTag(tag: DPTag) {
-    for (index, t) in tags.enumerated() {
-      if t == tag {
-        tags.remove(at: index)
-        rebuild()
-        return
-      }
+    if let idx = self.tags.index(of: tag) {
+      tags.remove(at: idx)
+      rebuild()
     }
   }
 
-  func handleTagTouch(button: UIButton) {
-    let tagIdx = button.tag
-    let tag = self.tags[tagIdx]
-    print(tag)
+  func handleTagTouch(gesture: UITapGestureRecognizer) {
+    if let tapView = gesture.view {
+      let tagIdx = tapView.tag
+      let tag = self.tags[tagIdx]
+      if let tapAction = tag.tapActionBlock {
+        tapAction(tag)
+      }
+    }
   }
 
   func reset() {
@@ -169,12 +174,16 @@ class DPTag: NSObject {
   var tagType: DPTagType = .text
   var text: NSAttributedString?
   var icon: UIImage?
+  var backgroundColor: UIColor?
 //  左右边距
   var offset: CGFloat = 10.0
 //   用户可配置固定的元素大小
   var fixedSize: CGSize? = nil
 
   var customViewBlock: ((DPTag) -> UIView)!
+  var tapActionBlock: ((DPTag) -> Void)? = nil
+
+  var ext: Any? = nil
 
   var sizeOfText: CGSize {
 
@@ -196,11 +205,26 @@ class DPTag: NSObject {
   init( tagType: DPTagType = .text,
            text: NSAttributedString?,
            icon: UIImage? = nil,
+backgroundColor: UIColor? = nil,
          offset: CGFloat = 10.0,
       fixedSize: CGSize? = nil,
             ext: Any? = nil,  // 任意参数
-customViewBlock: ((DPTag) -> UIView)! = nil) {
+customViewBlock: ((DPTag) -> UIView)! = nil,
+ tapActionBlock: ((DPTag) -> Void)? = nil) {
     super.init()
+    self.tagType = tagType
+    self.text = text
+    self.icon = icon
+    self.backgroundColor = backgroundColor
+    self.offset = offset
+    self.fixedSize = fixedSize
+    self.ext = ext
+    self.customViewBlock = customViewBlock
+    self.tapActionBlock = tapActionBlock
+  }
+
+  deinit {
+    print("\(self.text?.string) has been deinit")
   }
 
 }

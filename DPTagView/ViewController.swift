@@ -22,22 +22,18 @@ class ViewController: UIViewController {
     self.view.addSubview(tagView)
     tagView.backgroundColor = .yellow
     tagView.dp_x = 0.0
-    tagView.dp_y = 200.0
+    tagView.dp_y = 0.0
     tagView.offset = 15
 
     var tagSize = CGSize(width: 105, height: 26)
     let font: UIFont = .systemFont(ofSize: 14)
 
-    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), fixedSize: tagSize))
-    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), fixedSize: tagSize))
-    tagSize = .init(width: 100, height: 100)
-    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), fixedSize: tagSize))
+    let tapAction:((DPTag) -> Void) = { (tag) in
+      print("you tap \(tag.text?.string)")
+      self.tagView.removeTag(tag: tag)
+    }
 
-    let tag = DPTag.init(text: .init(string: self.randomText,
-                   attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
-                            icon: UIImage(named: "icon"),
-                          offset: 15,
-                       fixedSize: tagSize) { tag in
+    let createCustomViewAction:((DPTag) -> UIView) = { tag in
       let tagView: DPIconTagView = .fromNib()
       tagView.dp_width  = 100.0
       tagView.dp_height = 130.0
@@ -45,6 +41,19 @@ class ViewController: UIViewController {
       tagView.label.text = "hello world"
       return tagView
     }
+
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
+    tagSize = .init(width: 100, height: 100)
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
+
+    let tag = DPTag.init(text: .init(string: self.randomText,
+                   attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
+                            icon: UIImage(named: "icon"),
+                 backgroundColor: UIColor.random(),
+                          offset: 15, fixedSize: nil,
+                 customViewBlock: createCustomViewAction,
+                  tapActionBlock: tapAction);
     tagView.addTag(tag: tag)
   }
 
@@ -57,7 +66,13 @@ class ViewController: UIViewController {
 
     let font: UIFont = .systemFont(ofSize: 12)
     for _ in 0 ..< 20 {
-      tags.append(.init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil, customViewBlock: nil))
+      tags.append(.init(tagType: .text,
+                           text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
+                           icon: nil,
+                backgroundColor: UIColor.random(),
+                         offset: 5,
+                      fixedSize: nil,
+                customViewBlock: nil))
     }
 
     self.tagView.setTags(tags: tags)
@@ -69,7 +84,7 @@ class ViewController: UIViewController {
   
   @IBAction func handleAddTag(_ sender: Any) {
     let font: UIFont = .systemFont(ofSize: 16)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil, customViewBlock: nil))
+    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, backgroundColor: UIColor.random(), offset: 5, fixedSize: nil, customViewBlock: nil))
   }
   
   @IBAction func handleAddCustomView(_ sender: Any) {
