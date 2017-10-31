@@ -22,14 +22,36 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPX-x8-S4Z">
-                                <rect key="frame" x="35" y="474" width="86" height="30"/>
+                                <rect key="frame" x="50" y="611" width="57" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add TextTag"/>
+                                <state key="normal" title="Add Tag"/>
+                                <connections>
+                                    <action selector="handleAddTag:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WH7-D1-GcC"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PMR-qR-WQC">
-                                <rect key="frame" x="177" y="474" width="182" height="30"/>
+                                <rect key="frame" x="177" y="611" width="182" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Add Tag with custom View"/>
+                                <connections>
+                                    <action selector="handleAddCustomView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jtd-6g-qhn"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qJ9-Oi-Jx2">
+                                <rect key="frame" x="46" y="565" width="65" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Add Tags"/>
+                                <connections>
+                                    <action selector="handleAddTags:" destination="BYZ-38-t0r" eventType="touchUpInside" id="izI-LY-pzi"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bqc-x7-dDr">
+                                <rect key="frame" x="286" y="565" width="73" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Clear Tags"/>
+                                <connections>
+                                    <action selector="handleClearTags:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JJQ-o1-S4j"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -27,14 +27,15 @@ class ViewController: UIViewController {
 
     var tagSize = CGSize(width: 105, height: 26)
     let font: UIFont = .systemFont(ofSize: 14)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
-    tagSize = .init(width: 100, height: 100)
-    tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
 
-    let tag = DPTag.init(tagType: .text,
-                            text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
-                            icon: nil,
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), fixedSize: tagSize))
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), fixedSize: tagSize))
+    tagSize = .init(width: 100, height: 100)
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), fixedSize: tagSize))
+
+    let tag = DPTag.init(text: .init(string: self.randomText,
+                   attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
+                            icon: UIImage(named: "icon"),
                           offset: 15,
                        fixedSize: tagSize) { tag in
       let tagView: DPIconTagView = .fromNib()
@@ -45,24 +46,13 @@ class ViewController: UIViewController {
       return tagView
     }
     tagView.addTag(tag: tag)
-
-    self.view.isUserInteractionEnabled = true
-
-    let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-    tap.numberOfTapsRequired = 1
-    tap.numberOfTouchesRequired = 1
-    self.view.addGestureRecognizer(tap)
-
-    let longTap = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(rec:)))
-    longTap.minimumPressDuration = 2
-    self.view.addGestureRecognizer(longTap)
   }
 
-  func handleLongPress(rec: UILongPressGestureRecognizer) {
-    print("long")
-    rec.isEnabled = false
-    rec.removeTarget(self, action: #selector(handleLongPress(rec:)))
-
+  var randomText: String {
+    return ["下载", "WordPress", "到本地", "解压缩后将文件夹", "Git", "版本库", "Coding",  "项目", "的"].random()!
+  }
+  
+  @IBAction func handleAddTags(_ sender: Any) {
     var tags: [DPTag] = []
 
     let font: UIFont = .systemFont(ofSize: 12)
@@ -73,14 +63,18 @@ class ViewController: UIViewController {
     self.tagView.setTags(tags: tags)
   }
 
-  func handleTap() {
+  @IBAction func handleClearTags(_ sender: Any) {
+    self.tagView.removeAllTags()
+  }
+  
+  @IBAction func handleAddTag(_ sender: Any) {
     let font: UIFont = .systemFont(ofSize: 16)
     tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 5, fixedSize: nil, customViewBlock: nil))
   }
-
-  var randomText: String {
-    return ["下载", "WordPress", "到本地", "解压缩后将文件夹", "Git", "版本库", "Coding",  "项目", "的"].random()!
+  
+  @IBAction func handleAddCustomView(_ sender: Any) {
   }
+  
 
 }
 

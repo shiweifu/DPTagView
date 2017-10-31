@@ -32,7 +32,6 @@ class DPTagView: UIView {
   private var curPosY: CGFloat = 0.0
   var curLineMaxHeight: CGFloat = 0.0
 
-
   func addTag(tag: DPTag) {
     self.tags.append(tag)
     renderElement(newTag: tag, index: self.tags.count - 1)
@@ -63,12 +62,13 @@ class DPTagView: UIView {
     var curX: CGFloat = self.curPosX
     var curY: CGFloat = self.curPosY
 
-//    最终坐标
+//    最终tag元素的坐标
     var tagBtnX: CGFloat = 0
     var tagBtnY: CGFloat = 0
 
     var tagElementView: UIView!
 
+//    自定义视图或者文本视图
     if let createBlock = tag.customViewBlock {
       tagElementView = createBlock(tag)
     }
@@ -79,7 +79,6 @@ class DPTagView: UIView {
 //      计算按钮的大小
       let tagSize = tag.sizeOfText
       btn.dp_size = tagSize
-      print(tag)
       tagElementView = btn
     }
 
@@ -91,22 +90,24 @@ class DPTagView: UIView {
 //    计算下一个元素的横轴坐标
     curX += tagElementView.dp_width + self.offset
 
-//      获取当前行最大高度
-    if tagElementView.dp_height > curLineMaxHeight {
-      curLineMaxHeight = tagElementView.dp_height
-    }
-
     var wrapLineFlag = false
 //      如果当前位置无法承载元素，另起一行，以当前行元素最大高度为换行标准
     if self.dp_width - curX < 0 {
       curY += curLineMaxHeight + self.offset
       curX = self.offset
 
+//      换行之后，当前行最大高度
+
       tagBtnX = curX
       tagBtnY = curY
 
       curX += tagElementView.dp_width + self.offset // 获得下一个元素应该所在的位置
       wrapLineFlag = true
+    }
+
+//      获取当前行最大高度
+    if tagElementView.dp_height > curLineMaxHeight {
+      curLineMaxHeight = tagElementView.dp_height
     }
 
     tagElementView.backgroundColor = .random()
@@ -127,6 +128,29 @@ class DPTagView: UIView {
     }
   }
 
+  func removeAllTags() {
+    for tagView in self.subviews {
+      UIView.animate(withDuration: 0.5, animations: {
+        tagView.dp_x = 0
+        tagView.dp_y = 0
+      }, completion: { b in
+        tagView.removeFromSuperview()
+      })
+    }
+
+    self.tags = []
+  }
+
+  func removeTag(tag: DPTag) {
+    for (index, t) in tags.enumerated() {
+      if t == tag {
+        tags.remove(at: index)
+        rebuild()
+        return
+      }
+    }
+  }
+
   func handleTagTouch(button: UIButton) {
     let tagIdx = button.tag
     let tag = self.tags[tagIdx]
@@ -141,7 +165,7 @@ class DPTagView: UIView {
 
 }
 
-struct DPTag: CustomStringConvertible {
+class DPTag: NSObject {
   var tagType: DPTagType = .text
   var text: NSAttributedString?
   var icon: UIImage?
@@ -165,20 +189,18 @@ struct DPTag: CustomStringConvertible {
     return .zero
   }
 
-  var sizeOfIcon: CGSize {
-
-    if let size = self.fixedSize {
-      return size
-    }
-
-    if let img = icon {
-      return img.size
-    }
-    return .zero
+  override var description: String {
+    return "tagName: \(self.text!.string) size: \(self.sizeOfText)"
   }
 
-  var description: String {
-    return "tagName: \(self.text!.string) size: \(self.sizeOfText)"
+  init( tagType: DPTagType = .text,
+           text: NSAttributedString?,
+           icon: UIImage? = nil,
+         offset: CGFloat = 10.0,
+      fixedSize: CGSize? = nil,
+            ext: Any? = nil,  // 任意参数
+customViewBlock: ((DPTag) -> UIView)! = nil) {
+    super.init()
   }
 
 }
@@ -225,7 +247,7 @@ extension UIView {
     }
   }
 
-  public var centerX: CGFloat {
+  public var dp_centerX: CGFloat {
     get {
       return self.center.x
     } set(value) {
@@ -233,7 +255,7 @@ extension UIView {
     }
   }
 
-  public var centerY: CGFloat {
+  public var dp_centerY: CGFloat {
     get {
       return self.center.y
     } set(value) {
