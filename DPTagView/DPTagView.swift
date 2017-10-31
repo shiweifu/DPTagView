@@ -105,21 +105,21 @@ class DPTagView: UIView {
       tagBtnX = curX
       tagBtnY = curY
 
-      curX += tagElementView.dp_width + self.offset
+      curX += tagElementView.dp_width + self.offset // 获得下一个元素应该所在的位置
       wrapLineFlag = true
     }
 
     tagElementView.backgroundColor = .random()
 
-//    更改当前视图的高度
-    self.dp_height = curY + curLineMaxHeight + self.offset
-
     self.curPosX = curX
     self.curPosY = curY
 
     if wrapLineFlag {
-      curLineMaxHeight = 0.0
+      curLineMaxHeight = tagElementView.dp_height
     }
+
+//    更改当前视图的高度
+    self.dp_height = curY + curLineMaxHeight + self.offset
 
     UIView.animate(withDuration: 0.25) {
       tagElementView.dp_x = tagBtnX

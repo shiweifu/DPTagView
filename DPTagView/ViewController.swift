@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     let font: UIFont = .systemFont(ofSize: 14)
     tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
     tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
-    tagSize = .init(width: 105, height: 100)
+    tagSize = .init(width: 100, height: 100)
     tagView.addTag(tag: .init(tagType: .text, text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), icon: nil, offset: 15, fixedSize: tagSize, customViewBlock: nil))
 
     let tag = DPTag.init(tagType: .text,
@@ -37,12 +37,14 @@ class ViewController: UIViewController {
                             icon: nil,
                           offset: 15,
                        fixedSize: tagSize) { tag in
-      let img = UIImageView(image: tag.icon)
-      img.image = UIImage(named: "Bitmap")
-      img.dp_size = .init(width: 50, height: 50)
-      return img
+      let tagView: DPIconTagView = .fromNib()
+      tagView.dp_width  = 100.0
+      tagView.dp_height = 130.0
+      tagView.iconImageView.image = tag.icon
+      tagView.label.text = "hello world"
+      return tagView
     }
-//    tagView.addTag(tag: tag)
+    tagView.addTag(tag: tag)
 
     self.view.isUserInteractionEnabled = true
 

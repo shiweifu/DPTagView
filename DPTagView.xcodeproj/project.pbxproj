@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		68D1C0671FA840030071BD03 /* DPIconTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D1C0661FA840030071BD03 /* DPIconTagView.xib */; };
+		68D1C0691FA842360071BD03 /* DPIconTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D1C0681FA842360071BD03 /* DPIconTagView.swift */; };
 		E19882200F4BF4650B15AFF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E198875B636B29CC6A32B7D6 /* Assets.xcassets */; };
 		E1988283F9115B1AA2468FD1 /* DPTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19886B07EE23D1F4E720AB5 /* DPTagView.swift */; };
 		E19885A1DDAD60A927FF30E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E198855099DD878CA8DF03A9 /* ViewController.swift */; };
@@ -16,10 +18,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		68D1C0661FA840030071BD03 /* DPIconTagView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DPIconTagView.xib; path = DPTagView/DPIconTagView.xib; sourceTree = "<group>"; };
+		68D1C0681FA842360071BD03 /* DPIconTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DPIconTagView.swift; path = DPTagView/DPIconTagView.swift; sourceTree = "<group>"; };
 		E19881FBA1D3FB7FA7A7C9DF /* DPTagView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DPTagView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E198855099DD878CA8DF03A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E19885CD1C1A06881FB79D7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E19886B07EE23D1F4E720AB5 /* DPTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPTagView.swift; sourceTree = "<group>"; };
+		E19886B07EE23D1F4E720AB5 /* DPTagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DPTagView.swift; path = DPTagView/DPTagView.swift; sourceTree = "<group>"; };
 		E198875B636B29CC6A32B7D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E198877B78BF78F7E60548D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E1988792E530A4F505563781 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,9 +41,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		68D1C0651FA83F5E0071BD03 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E19886B07EE23D1F4E720AB5 /* DPTagView.swift */,
+				68D1C0661FA840030071BD03 /* DPIconTagView.xib */,
+				68D1C0681FA842360071BD03 /* DPIconTagView.swift */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
 		E19881168AEBF4FDC562CDE5 = {
 			isa = PBXGroup;
 			children = (
+				68D1C0651FA83F5E0071BD03 /* Sources */,
 				E1988B552E4A109EDEBA1A0C /* Products */,
 				E1988F42E613642C7D15735F /* DPTagView */,
 			);
@@ -62,7 +77,6 @@
 				E1988792E530A4F505563781 /* AppDelegate.swift */,
 				E198812E1B39DB34598CE1CB /* Main.storyboard */,
 				E198855099DD878CA8DF03A9 /* ViewController.swift */,
-				E19886B07EE23D1F4E720AB5 /* DPTagView.swift */,
 			);
 			path = DPTagView;
 			sourceTree = "<group>";
@@ -119,6 +133,7 @@
 			files = (
 				E19882200F4BF4650B15AFF0 /* Assets.xcassets in Resources */,
 				E1988D5A3B3D22B81979FA55 /* LaunchScreen.storyboard in Resources */,
+				68D1C0671FA840030071BD03 /* DPIconTagView.xib in Resources */,
 				E1988AC37A4BAC46FEF82E70 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,6 +147,7 @@
 			files = (
 				E19889D0BF329CC5E35A43B2 /* AppDelegate.swift in Sources */,
 				E19885A1DDAD60A927FF30E0 /* ViewController.swift in Sources */,
+				68D1C0691FA842360071BD03 /* DPIconTagView.swift in Sources */,
 				E1988283F9115B1AA2468FD1 /* DPTagView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,6 +312,7 @@
 				E198838B3E713396C62447ED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
