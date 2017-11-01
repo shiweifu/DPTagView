@@ -33,6 +33,11 @@ class ViewController: UIViewController {
       self.tagView.removeTag(tag: tag)
     }
 
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
+    tagSize = .init(width: 100, height: 100)
+    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
+
     let createCustomViewAction:((DPTag) -> UIView) = { tag in
       let tagView: DPIconTagView = .fromNib()
       tagView.dp_width  = 100.0
@@ -41,11 +46,6 @@ class ViewController: UIViewController {
       tagView.label.text = "hello world"
       return tagView
     }
-
-    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
-    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
-    tagSize = .init(width: 100, height: 100)
-    tagView.addTag(tag: .init(text: .init(string: self.randomText, attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]), backgroundColor: UIColor.random(), fixedSize: tagSize))
 
     let tag = DPTag.init(text: .init(string: self.randomText,
                    attributes: [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: font]),
@@ -88,8 +88,29 @@ class ViewController: UIViewController {
   }
   
   @IBAction func handleAddCustomView(_ sender: Any) {
+
+    let tapAction:((DPTag) -> Void) = { (tag) in
+      print("you tap \(tag.text?.string)")
+      self.tagView.removeTag(tag: tag)
+    }
+
+    let createCustomViewAction:((DPTag) -> UIView) = { tag in
+      let tagView: DPIconTagView = .fromNib()
+      tagView.dp_width  = 100.0
+      tagView.dp_height = 130.0
+      tagView.iconImageView.image = tag.icon
+      tagView.label.text = "hello world"
+      return tagView
+    }
+
+    let tag = DPTag.init(text: .init(string: self.randomText, attributes: nil),
+            icon: UIImage(named: "icon"),
+            backgroundColor: UIColor.random(),
+            offset: 15, fixedSize: nil,
+            customViewBlock: createCustomViewAction,
+            tapActionBlock: tapAction);
+    tagView.addTag(tag: tag)
   }
-  
 
 }
 
