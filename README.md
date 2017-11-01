@@ -1,6 +1,6 @@
 ### 演示：
 
-[![dptagview.gif](https://i.loli.net/2017/11/01/59f971482d041.gif)](https://i.loli.net/2017/11/01/59f971482d041.gif)
+![](https://i.loli.net/2017/11/01/59f971482d041.gif)
 
 
 ### 功能介绍
@@ -11,11 +11,11 @@
 
 - 文本内容作为tag元素
 
-[![](https://ooo.0o0.ooo/2017/11/01/59f9732ecfc20.jpg)](https://ooo.0o0.ooo/2017/11/01/59f9732ecfc20.jpg)
+![](https://ooo.0o0.ooo/2017/11/01/59f9732ecfc20.jpg)
 
 - 自定义轻量级的视图元素
 
-[![](https://ooo.0o0.ooo/2017/11/01/59f9732ecfc20.jpg)](https://ooo.0o0.ooo/2017/11/01/59f9731201cda.jpg)
+![](https://ooo.0o0.ooo/2017/11/01/59f9731201cda.jpg)
 
 ### 调用接口
 
